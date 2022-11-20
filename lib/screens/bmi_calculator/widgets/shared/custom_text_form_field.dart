@@ -2,6 +2,7 @@ import 'package:bmi_calculator/styles/app_colors.dart';
 import 'package:bmi_calculator/styles/app_decorations.dart';
 import 'package:bmi_calculator/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String hintText;
@@ -11,13 +12,17 @@ class CustomTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Flexible(
       child: TextFormField(
-        keyboardType: TextInputType.number,
-        textAlign: TextAlign.center,
-        style: AppTextStyles.inputText,
         cursorColor: AppColors.purple,
         decoration: AppDecorations.inputDecoration(
           hintText: hintText,
         ),
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+          LengthLimitingTextInputFormatter(3),
+        ],
+        keyboardType: TextInputType.number,
+        style: AppTextStyles.inputText,
+        textAlign: TextAlign.center,
       ),
     );
   }
