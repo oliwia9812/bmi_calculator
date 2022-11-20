@@ -6,7 +6,12 @@ import 'package:flutter/services.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String hintText;
-  const CustomTextFormField({required this.hintText, super.key});
+  final void Function(String)? onChange;
+  const CustomTextFormField({
+    required this.onChange,
+    required this.hintText,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +28,7 @@ class CustomTextFormField extends StatelessWidget {
         keyboardType: TextInputType.number,
         style: AppTextStyles.inputText,
         textAlign: TextAlign.center,
+        onChanged: onChange,
       ),
     );
   }

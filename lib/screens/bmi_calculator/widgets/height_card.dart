@@ -1,8 +1,10 @@
+import 'package:bmi_calculator/bloc/calculator_bloc.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/shared/card_label.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/shared/custom_text_form_field.dart';
 import 'package:bmi_calculator/styles/app_colors.dart';
 import 'package:bmi_calculator/styles/app_decorations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 const List<String> _heightValues = ["cm", "ft+in"];
 
@@ -59,10 +61,28 @@ class _HeightCardState extends State<HeightCard> {
               Row(
                 children: [
                   if (_isImperial) ...[
-                    _buildTextFormField(hintText: "ft"),
-                    _buildTextFormField(hintText: "in"),
+                    _buildTextFormField(
+                      hintText: "ft",
+                      onChange: (value) {},
+                    ),
+                    _buildTextFormField(
+                      hintText: "in",
+                      onChange: (value) {},
+                    ),
                   ] else ...[
-                    _buildTextFormField(hintText: "175"),
+                    _buildTextFormField(
+                      hintText: "175",
+                      onChange: (value) {
+                        if (value.isEmpty || value.length <= 2) {
+                          context.read<CalculatorBloc>().add(
+                              const ResetInput(inputType: InputType.height));
+                        } else {
+                          context
+                              .read<CalculatorBloc>()
+                              .add(GetBmiResult(height: double.parse(value)));
+                        }
+                      },
+                    ),
                   ]
                 ],
               ),
@@ -73,7 +93,13 @@ class _HeightCardState extends State<HeightCard> {
     );
   }
 
-  Widget _buildTextFormField({required String hintText}) {
-    return CustomTextFormField(hintText: hintText);
+  Widget _buildTextFormField({
+    required String hintText,
+    required void Function(String)? onChange,
+  }) {
+    return CustomTextFormField(
+      hintText: hintText,
+      onChange: onChange,
+    );
   }
 }

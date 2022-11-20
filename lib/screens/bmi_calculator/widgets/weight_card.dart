@@ -1,8 +1,10 @@
+import 'package:bmi_calculator/bloc/calculator_bloc.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/shared/card_label.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/shared/custom_text_form_field.dart';
 import 'package:bmi_calculator/styles/app_colors.dart';
 import 'package:bmi_calculator/styles/app_decorations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 const List<String> _weightValues = ["kg", "st+lb"];
 
@@ -59,10 +61,29 @@ class _WeightCardState extends State<WeightCard> {
               Row(
                 children: [
                   if (_isImperial) ...[
-                    _buildTextFormField(hintText: "st"),
-                    _buildTextFormField(hintText: "lb"),
+                    _buildTextFormField(
+                      hintText: "st",
+                      onChange: (value) {},
+                    ),
+                    _buildTextFormField(
+                      hintText: "lb",
+                      onChange: (value) {},
+                    ),
                   ] else ...[
-                    _buildTextFormField(hintText: "60"),
+                    _buildTextFormField(
+                      hintText: "60",
+                      onChange: (value) {
+                        if (value.isEmpty || value.length < 2) {
+                          context.read<CalculatorBloc>().add(
+                                const ResetInput(inputType: InputType.weight),
+                              );
+                        } else {
+                          context.read<CalculatorBloc>().add(
+                                GetBmiResult(weight: double.parse(value)),
+                              );
+                        }
+                      },
+                    ),
                   ]
                 ],
               ),
@@ -73,7 +94,13 @@ class _WeightCardState extends State<WeightCard> {
     );
   }
 
-  Widget _buildTextFormField({required String hintText}) {
-    return CustomTextFormField(hintText: hintText);
+  Widget _buildTextFormField({
+    required String hintText,
+    required void Function(String)? onChange,
+  }) {
+    return CustomTextFormField(
+      hintText: hintText,
+      onChange: onChange,
+    );
   }
 }

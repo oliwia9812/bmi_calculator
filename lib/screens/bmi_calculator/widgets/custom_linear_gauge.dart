@@ -3,7 +3,8 @@ import 'package:bmi_calculator/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomLinearGauge extends StatefulWidget {
-  const CustomLinearGauge({super.key});
+  final double? pointerValue;
+  const CustomLinearGauge({this.pointerValue, super.key});
 
   @override
   State<CustomLinearGauge> createState() => _CustomLinearGaugeState();
@@ -18,9 +19,9 @@ class _CustomLinearGaugeState extends State<CustomLinearGauge> {
       showTicks: false,
       showLabels: false,
       showAxisTrack: false,
-      markerPointers: const [
+      markerPointers: [
         LinearShapePointer(
-          value: 0,
+          value: widget.pointerValue ?? 0,
           color: AppColors.darkGray,
         ),
       ],

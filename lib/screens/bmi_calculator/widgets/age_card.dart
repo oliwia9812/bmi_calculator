@@ -11,6 +11,8 @@ class AgeCard extends StatefulWidget {
   State<AgeCard> createState() => _AgeCardState();
 }
 
+int _currentAge = 25;
+
 class _AgeCardState extends State<AgeCard> {
   @override
   Widget build(BuildContext context) {
@@ -64,10 +66,10 @@ class _AgeCardState extends State<AgeCard> {
   }
 
   Widget _buildAge() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 36.0),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 36.0),
       child: Text(
-        '25',
+        _currentAge.toString(),
         style: AppTextStyles.cardTitleMedium,
       ),
     );

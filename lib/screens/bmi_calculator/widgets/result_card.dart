@@ -1,8 +1,10 @@
+import 'package:bmi_calculator/bloc/calculator_bloc.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/custom_linear_gauge.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/shared/card_label.dart';
 import 'package:bmi_calculator/styles/app_text_styles.dart';
 import 'package:bmi_calculator/styles/app_decorations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ResultCard extends StatefulWidget {
   const ResultCard({super.key});
@@ -24,39 +26,51 @@ class _ResultCardState extends State<ResultCard> {
           decoration: AppDecorations.card(),
           padding: const EdgeInsets.all(16.0),
           width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const CardLabel(labelText: "Your BMI result"),
-              Column(
-                children: [
-                  _buildBMIResult(),
-                  _buildResultInterpretation(),
-                ],
-              ),
-              _buildLinearGauge(),
-            ],
+          child: BlocBuilder<CalculatorBloc, CalculatorState>(
+            builder: (context, state) {
+              if (state is CalculatorLoaded) {
+                final double? result = state.result;
+                final String? interpretation = state.intepretation;
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    const CardLabel(labelText: "Your BMI result"),
+                    Column(
+                      children: [
+                        _buildBMIResult(result),
+                        _buildResultInterpretation(interpretation),
+                      ],
+                    ),
+                    _buildLinearGauge(result),
+                  ],
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
           ),
         ),
       ),
     );
   }
 
-  Widget _buildBMIResult() {
-    return const Text(
-      '-',
+  Widget _buildBMIResult(double? result) {
+    return Text(
+      result != null ? result.toStringAsFixed(2) : "-",
       style: AppTextStyles.cardTitleLarge,
     );
   }
 
-  Widget _buildResultInterpretation() {
-    return const Text(
-      "",
+  Widget _buildResultInterpretation(String? interpretation) {
+    return Text(
+      interpretation ?? "",
       style: AppTextStyles.cardTitleSmall,
     );
   }
 
-  Widget _buildLinearGauge() {
-    return const CustomLinearGauge();
+  Widget _buildLinearGauge(double? result) {
+    return CustomLinearGauge(
+      pointerValue: result,
+    );
   }
 }
