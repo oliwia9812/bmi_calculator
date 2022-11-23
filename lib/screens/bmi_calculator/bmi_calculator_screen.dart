@@ -24,7 +24,16 @@ class BmiCalculatorScreen extends StatelessWidget {
           horizontal: 12.0,
           vertical: 32.0,
         ),
-        child: Column(
+        // child: Column(
+        //   children: [
+        //     _buildHeader(context),
+        //     _buildSelectGender(),
+        //     _buildSelectAge(),
+        //     _buildSelectWeightAndHeight(),
+        //     _buildResult(),
+        //   ],
+        // ),
+        child: ListView(
           children: [
             _buildHeader(context),
             _buildSelectGender(),

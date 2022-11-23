@@ -2,12 +2,12 @@ import 'package:bmi_calculator/screens/bmi_calculator/widgets/shared/card_label.
 import 'package:bmi_calculator/styles/app_decorations.dart';
 import 'package:flutter/material.dart';
 
-class CustomGenderButton extends StatelessWidget {
+class GenderButton extends StatelessWidget {
   final String genderImage;
   final String genderTitle;
   final bool isSelected;
 
-  const CustomGenderButton({
+  const GenderButton({
     required this.genderImage,
     required this.genderTitle,
     required this.isSelected,

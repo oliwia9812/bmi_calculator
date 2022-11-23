@@ -1,6 +1,6 @@
 import 'package:bmi_calculator/bloc/calculator_bloc.dart';
 import 'package:bmi_calculator/generated/assets.gen.dart';
-import 'package:bmi_calculator/screens/bmi_calculator/widgets/custom_gender_button.dart';
+import 'package:bmi_calculator/screens/bmi_calculator/widgets/gender_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -41,12 +41,12 @@ class _GenderCardsState extends State<GenderCards> {
             renderBorder: false,
             splashColor: Colors.transparent,
             children: [
-              CustomGenderButton(
+              GenderButton(
                 genderTitle: "Male",
                 genderImage: Assets.images.genderMale.path,
                 isSelected: _selections[0],
               ),
-              CustomGenderButton(
+              GenderButton(
                 genderTitle: "Female",
                 genderImage: Assets.images.genderFemale.path,
                 isSelected: _selections[1],

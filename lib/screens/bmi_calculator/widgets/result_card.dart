@@ -26,6 +26,7 @@ class _ResultCardState extends State<ResultCard> {
           decoration: AppDecorations.card(),
           padding: const EdgeInsets.all(16.0),
           width: double.infinity,
+          height: 260.0,
           child: BlocBuilder<CalculatorBloc, CalculatorState>(
             builder: (context, state) {
               if (state is CalculatorLoaded) {
