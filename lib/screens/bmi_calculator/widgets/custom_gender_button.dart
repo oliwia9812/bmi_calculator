@@ -23,7 +23,7 @@ class CustomGenderButton extends StatelessWidget {
         height: 160.0,
         width: double.infinity,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CardLabel(labelText: genderTitle),
             SizedBox(

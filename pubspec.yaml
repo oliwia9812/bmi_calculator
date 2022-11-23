@@ -16,6 +16,7 @@ dependencies:
   flutter_native_splash: ^2.2.14
   flutter_gen_runner: ^5.1.0+1
   syncfusion_flutter_gauges: ^20.3.57
+  units_converter: ^2.0.1
 
 dev_dependencies:
   flutter_test:

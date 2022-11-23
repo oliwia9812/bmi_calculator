@@ -1,63 +1,119 @@
-import 'dart:math';
-
 import 'package:bloc/bloc.dart';
+import 'package:bmi_calculator/repository/units_repository.dart';
+import 'package:bmi_calculator/utils/calculation_helper.dart';
 import 'package:equatable/equatable.dart';
 
 part 'calculator_event.dart';
 part 'calculator_state.dart';
 
-enum InputType { height, weight }
-
-enum Gender { male, female }
+enum InputType { height, weight, feet, inches, lbs }
 
 class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
   CalculatorBloc() : super(CalculatorInitial()) {
-    on<GetBmiResult>(_onGetBmiResult);
-    on<ResetInput>(_onResetInput);
+    on<UpdateMetricEvent>(_handleUpdateMetric);
+    on<SwitchCurrentUnit>(_handleSwitchCurrentUnit);
+    on<UpdateImperialEvent>(_handleUpdateImperial);
+    on<ResetInputEvent>(_handleResetInput);
+    on<ResetEvent>(_handleReset);
   }
 
-  double? weight;
-  double? height;
-  double? result;
+  CurrentUnit? _currentUnit;
+  int? _weight;
+  int? _height;
+  int? _feet;
+  double? _inches;
+  double? _lbs;
+  String? result;
+  String? interpretation;
 
-  void _onGetBmiResult(GetBmiResult event, Emitter<CalculatorState> emit) {
-    event.weight != null ? weight = event.weight : null;
-    event.height != null ? height = event.height : null;
+  void _handleSwitchCurrentUnit(
+      SwitchCurrentUnit event, Emitter<CalculatorState> emit) {
+    _currentUnit = event.currentUnit;
 
-    if (weight != null && height != null) {
-      result = (weight! / pow((height! / 100), 2));
-      emit(CalculatorLoaded(
-          result: result, intepretation: _getInterpretation()));
-    } else {
-      emit(const CalculatorLoaded(result: null));
+    emit(CalculatorLoaded(result: null, currentUnit: _currentUnit));
+  }
+
+  void _handleUpdateMetric(
+      UpdateMetricEvent event, Emitter<CalculatorState> emit) {
+    setPropertiesMetric(event);
+
+    if (_height != null && _weight != null) {
+      result = Metric(height: _height, weight: _weight).getBmiResult();
+      interpretation =
+          CalculationHelper.getInterpretation(double.parse(result!));
+
+      return emit(CalculatorLoaded(
+        result: result,
+        currentUnit: _currentUnit,
+        interpretation: interpretation,
+      ));
     }
+
+    return emit(CalculatorLoaded(result: null, currentUnit: _currentUnit));
   }
 
-  void _onResetInput(ResetInput event, Emitter<CalculatorState> emit) {
-    if (event.inputType == InputType.height) height = null;
-    if (event.inputType == InputType.weight) weight = null;
+  void _handleUpdateImperial(
+      UpdateImperialEvent event, Emitter<CalculatorState> emit) {
+    setPropertiesImperial(event);
 
-    emit(const CalculatorLoaded(result: null));
-  }
-
-  String _getInterpretation() {
-    if (result! < 16.0) {
-      return "Very severly underweight";
-    } else if (result! >= 16.0 && result! < 16.9) {
-      return "Severly Underweight";
-    } else if (result! >= 16.9 && result! < 18.5) {
-      return "Underweight";
-    } else if (result! >= 18.5 && result! < 24.9) {
-      return "Normal weight";
-    } else if (result! >= 24.9 && result! < 29.9) {
-      return "Overweight";
-    } else if (result! >= 29.9 && result! < 34.9) {
-      return "Obese class I";
-    } else if (result! >= 34.9 && result! < 39.9) {
-      return "Obese class II";
-    } else if (result! >= 39.0) {
-      return "Obese class III";
+    if (_feet != null && _inches != null && _lbs != null) {
+      result = Imperial(feet: _feet, inches: _inches, lbs: _lbs).getBmiResult();
+      interpretation =
+          CalculationHelper.getInterpretation(double.parse(result!));
+      return emit(CalculatorLoaded(
+          result: result,
+          currentUnit: _currentUnit,
+          interpretation: interpretation));
     }
-    return "";
+
+    return emit(CalculatorLoaded(result: null, currentUnit: _currentUnit));
+  }
+
+  void setPropertiesMetric(UpdateMetricEvent event) {
+    event.height != null ? _height = event.height : null;
+    event.weight != null ? _weight = event.weight : null;
+  }
+
+  void setPropertiesImperial(UpdateImperialEvent event) {
+    event.feet != null ? _feet = event.feet : null;
+    event.inches != null ? _inches = event.inches : null;
+    event.lbs != null ? _lbs = event.lbs : null;
+  }
+
+  void _handleResetInput(ResetInputEvent event, Emitter<CalculatorState> emit) {
+    switch (event.inputType) {
+      case InputType.height:
+        _height = null;
+        break;
+      case InputType.weight:
+        _weight = null;
+        break;
+      case InputType.feet:
+        _feet = null;
+        break;
+      case InputType.inches:
+        _inches = null;
+        break;
+      case InputType.lbs:
+        _lbs = null;
+        break;
+    }
+
+    emit(CalculatorLoaded(result: null, currentUnit: _currentUnit));
+  }
+
+  void _handleReset(ResetEvent event, Emitter<CalculatorState> emit) {
+    _weight = null;
+    _height = null;
+    _feet = null;
+    _inches = null;
+    _lbs = null;
+
+    emit(CalculatorInitial());
+    return emit(const CalculatorLoaded(
+      result: null,
+      interpretation: null,
+      currentUnit: CurrentUnit.metric,
+    ));
   }
 }

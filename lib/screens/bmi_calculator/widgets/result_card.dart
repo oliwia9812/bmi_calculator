@@ -29,8 +29,8 @@ class _ResultCardState extends State<ResultCard> {
           child: BlocBuilder<CalculatorBloc, CalculatorState>(
             builder: (context, state) {
               if (state is CalculatorLoaded) {
-                final double? result = state.result;
-                final String? interpretation = state.intepretation;
+                final String? result = state.result;
+                final String? interpretation = state.interpretation;
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -54,9 +54,9 @@ class _ResultCardState extends State<ResultCard> {
     );
   }
 
-  Widget _buildBMIResult(double? result) {
+  Widget _buildBMIResult(String? result) {
     return Text(
-      result != null ? result.toStringAsFixed(2) : "-",
+      result ?? "-",
       style: AppTextStyles.cardTitleLarge,
     );
   }
@@ -68,9 +68,9 @@ class _ResultCardState extends State<ResultCard> {
     );
   }
 
-  Widget _buildLinearGauge(double? result) {
+  Widget _buildLinearGauge(String? result) {
     return CustomLinearGauge(
-      pointerValue: result,
+      pointerValue: result != null ? double.parse(result) : 0.0,
     );
   }
 }

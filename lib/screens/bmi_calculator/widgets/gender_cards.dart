@@ -1,6 +1,8 @@
+import 'package:bmi_calculator/bloc/calculator_bloc.dart';
 import 'package:bmi_calculator/generated/assets.gen.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/custom_gender_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GenderCards extends StatefulWidget {
   const GenderCards({super.key});
@@ -20,34 +22,44 @@ class _GenderCardsState extends State<GenderCards> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 12.0),
-      child: LayoutBuilder(
-        builder: (context, constraints) => ToggleButtons(
-          constraints: BoxConstraints.expand(width: (constraints.maxWidth) / 2),
-          fillColor: Colors.transparent,
-          isSelected: _selections,
-          renderBorder: false,
-          splashColor: Colors.transparent,
-          children: [
-            CustomGenderButton(
-              genderTitle: "Male",
-              genderImage: Assets.images.genderMale.path,
-              isSelected: _selections[0],
-            ),
-            CustomGenderButton(
-              genderTitle: "Female",
-              genderImage: Assets.images.genderFemale.path,
-              isSelected: _selections[1],
-            ),
-          ],
-          onPressed: (index) {
-            setState(() {
-              for (int i = 0; i < _selections.length; i++) {
-                _selections[i] = i == index;
-              }
-            });
-          },
+    return BlocListener<CalculatorBloc, CalculatorState>(
+      listener: (context, state) {
+        if (state is CalculatorInitial) {
+          setState(() {
+            _selections = [false, false];
+          });
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 12.0),
+        child: LayoutBuilder(
+          builder: (context, constraints) => ToggleButtons(
+            constraints:
+                BoxConstraints.expand(width: (constraints.maxWidth) / 2),
+            fillColor: Colors.transparent,
+            isSelected: _selections,
+            renderBorder: false,
+            splashColor: Colors.transparent,
+            children: [
+              CustomGenderButton(
+                genderTitle: "Male",
+                genderImage: Assets.images.genderMale.path,
+                isSelected: _selections[0],
+              ),
+              CustomGenderButton(
+                genderTitle: "Female",
+                genderImage: Assets.images.genderFemale.path,
+                isSelected: _selections[1],
+              ),
+            ],
+            onPressed: (index) {
+              setState(() {
+                for (int i = 0; i < _selections.length; i++) {
+                  _selections[i] = i == index;
+                }
+              });
+            },
+          ),
         ),
       ),
     );

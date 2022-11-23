@@ -7,9 +7,16 @@ import 'package:flutter/services.dart';
 class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final void Function(String)? onChange;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final int? limitingNumber;
+
   const CustomTextFormField({
     required this.onChange,
     required this.hintText,
+    this.controller,
+    this.focusNode,
+    this.limitingNumber = 3,
     super.key,
   });
 
@@ -23,12 +30,14 @@ class CustomTextFormField extends StatelessWidget {
         ),
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
-          LengthLimitingTextInputFormatter(3),
+          LengthLimitingTextInputFormatter(limitingNumber),
         ],
         keyboardType: TextInputType.number,
         style: AppTextStyles.inputText,
         textAlign: TextAlign.center,
         onChanged: onChange,
+        controller: controller,
+        focusNode: focusNode,
       ),
     );
   }

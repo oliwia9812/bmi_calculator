@@ -1,12 +1,10 @@
 import 'package:bmi_calculator/bloc/calculator_bloc.dart';
+import 'package:bmi_calculator/repository/units_repository.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/shared/card_label.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/shared/custom_text_form_field.dart';
-import 'package:bmi_calculator/styles/app_colors.dart';
 import 'package:bmi_calculator/styles/app_decorations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-const List<String> _weightValues = ["kg", "st+lb"];
 
 class WeightCard extends StatefulWidget {
   const WeightCard({super.key});
@@ -16,91 +14,128 @@ class WeightCard extends StatefulWidget {
 }
 
 class _WeightCardState extends State<WeightCard> {
-  String _dropdownValue = _weightValues.first;
-  bool _isImperial = false;
+  final TextEditingController _weightKgController = TextEditingController();
+  final TextEditingController _weightLbController = TextEditingController();
+  final FocusNode _fWeightLb = FocusNode();
+  final FocusNode _fWeightKg = FocusNode();
+
+  @override
+  void dispose() {
+    _fWeightKg.dispose();
+    _fWeightLb.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 32.0),
-          height: 160.0,
-          decoration: AppDecorations.card(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              DropdownButtonHideUnderline(
-                child: DropdownButton(
-                  iconEnabledColor: AppColors.darkGray,
-                  value: _dropdownValue,
-                  onChanged: (value) {
-                    setState(() {
-                      _dropdownValue = value!;
-                    });
+    return BlocConsumer<CalculatorBloc, CalculatorState>(
+      listener: (context, state) {
+        if (state is CalculatorInitial) {
+          _weightKgController.clear();
+          _weightLbController.clear();
+          _fWeightKg.unfocus();
+          _fWeightLb.unfocus();
 
-                    if (value == "st+lb") {
-                      _isImperial = true;
-                    } else {
-                      _isImperial = false;
-                    }
-                  },
-                  items: _weightValues
-                      .map(
-                        (value) => DropdownMenuItem(
-                          value: value,
-                          child: CardLabel(
-                            labelText: "Weight ($value)",
-                          ),
-                        ),
-                      )
-                      .toList(),
+          context
+              .read<CalculatorBloc>()
+              .add(const ResetInputEvent(inputType: InputType.weight));
+
+          context
+              .read<CalculatorBloc>()
+              .add(const ResetInputEvent(inputType: InputType.lbs));
+        }
+      },
+      builder: (context, state) {
+        if (state is CalculatorLoaded) {
+          String unit = state.currentUnit == CurrentUnit.metric ? "kg" : "lb";
+
+          return Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 20.0),
+                height: 160.0,
+                decoration: AppDecorations.card(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildCardLabel(unit),
+                    Row(
+                      children: [
+                        if (state.currentUnit == CurrentUnit.metric) ...[
+                          _buildWeightKg(),
+                        ] else if (state.currentUnit ==
+                            CurrentUnit.imperial) ...[
+                          _buildWeightLb(),
+                        ],
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              Row(
-                children: [
-                  if (_isImperial) ...[
-                    _buildTextFormField(
-                      hintText: "st",
-                      onChange: (value) {},
-                    ),
-                    _buildTextFormField(
-                      hintText: "lb",
-                      onChange: (value) {},
-                    ),
-                  ] else ...[
-                    _buildTextFormField(
-                      hintText: "60",
-                      onChange: (value) {
-                        if (value.isEmpty || value.length < 2) {
-                          context.read<CalculatorBloc>().add(
-                                const ResetInput(inputType: InputType.weight),
-                              );
-                        } else {
-                          context.read<CalculatorBloc>().add(
-                                GetBmiResult(weight: double.parse(value)),
-                              );
-                        }
-                      },
-                    ),
-                  ]
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
+          );
+        }
+        return const SizedBox.shrink();
+      },
     );
+  }
+
+  Widget _buildCardLabel(String unit) {
+    return CardLabel(labelText: "Weight ($unit)");
   }
 
   Widget _buildTextFormField({
     required String hintText,
     required void Function(String)? onChange,
+    FocusNode? focusNode,
+    TextEditingController? controller,
   }) {
     return CustomTextFormField(
       hintText: hintText,
       onChange: onChange,
+      controller: controller,
+      focusNode: focusNode,
+    );
+  }
+
+  Widget _buildWeightLb() {
+    return _buildTextFormField(
+      hintText: "lb",
+      controller: _weightLbController,
+      focusNode: _fWeightLb,
+      onChange: (value) {
+        if (value.isEmpty) _fWeightLb.unfocus();
+        if (value.isEmpty || value.length < 2) {
+          context
+              .read<CalculatorBloc>()
+              .add(const ResetInputEvent(inputType: InputType.lbs));
+        } else {
+          context
+              .read<CalculatorBloc>()
+              .add(UpdateImperialEvent(lbs: double.parse(value)));
+        }
+      },
+    );
+  }
+
+  Widget _buildWeightKg() {
+    return _buildTextFormField(
+      hintText: "60",
+      controller: _weightKgController,
+      focusNode: _fWeightKg,
+      onChange: (value) {
+        if (value.isEmpty) _fWeightKg.unfocus();
+        if (value.isEmpty || value.length < 2) {
+          context
+              .read<CalculatorBloc>()
+              .add(const ResetInputEvent(inputType: InputType.weight));
+        } else {
+          context
+              .read<CalculatorBloc>()
+              .add(UpdateMetricEvent(weight: int.parse(value)));
+        }
+      },
     );
   }
 }

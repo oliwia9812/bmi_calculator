@@ -1,5 +1,6 @@
 import 'package:bmi_calculator/bloc/calculator_bloc.dart';
 import 'package:bmi_calculator/generated/fonts.gen.dart';
+import 'package:bmi_calculator/repository/units_repository.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/bmi_calculator_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +13,7 @@ class App extends StatelessWidget {
     return BlocProvider(
       create: (context) => CalculatorBloc()
         ..add(
-          const GetBmiResult(),
+          const SwitchCurrentUnit(currentUnit: CurrentUnit.metric),
         ),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

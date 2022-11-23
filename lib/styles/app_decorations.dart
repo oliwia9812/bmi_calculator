@@ -36,4 +36,14 @@ abstract class AppDecorations {
         hintStyle: AppTextStyles.hintText,
         hintText: hintText,
       );
+
+  static BoxDecoration cupertinoModal = const BoxDecoration(
+    color: AppColors.white,
+    border: Border(
+      bottom: BorderSide(
+        color: Color(0xff999999),
+        width: 0.0,
+      ),
+    ),
+  );
 }

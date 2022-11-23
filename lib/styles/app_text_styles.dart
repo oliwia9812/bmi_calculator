@@ -37,4 +37,11 @@ abstract class AppTextStyles {
     fontSize: 24.0,
     fontWeight: FontWeight.w600,
   );
+
+  static const TextStyle pickerTitle = TextStyle(
+    color: AppColors.black,
+    fontSize: 18.0,
+    fontWeight: FontWeight.w400,
+    decoration: TextDecoration.none,
+  );
 }

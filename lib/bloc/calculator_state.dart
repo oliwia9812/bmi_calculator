@@ -2,19 +2,24 @@ part of 'calculator_bloc.dart';
 
 abstract class CalculatorState extends Equatable {
   const CalculatorState();
+}
 
+class CalculatorInitial extends CalculatorState {
   @override
   List<Object?> get props => [];
 }
 
-class CalculatorInitial extends CalculatorState {}
-
 class CalculatorLoaded extends CalculatorState {
-  final double? result;
-  final String? intepretation;
+  final CurrentUnit? currentUnit;
+  final String? result;
+  final String? interpretation;
 
-  const CalculatorLoaded({required this.result, this.intepretation});
+  const CalculatorLoaded({
+    required this.result,
+    this.currentUnit,
+    this.interpretation,
+  });
 
   @override
-  List<Object?> get props => [result];
+  List<Object?> get props => [currentUnit, result, interpretation];
 }

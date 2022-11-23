@@ -4,23 +4,44 @@ abstract class CalculatorEvent extends Equatable {
   const CalculatorEvent();
 }
 
-class GetBmiResult extends CalculatorEvent {
-  final double? height;
-  final double? weight;
-  final int? age;
-  final Gender? gender;
-
-  const GetBmiResult({this.height, this.weight, this.age, this.gender});
+class UpdateMetricEvent extends CalculatorEvent {
+  final int? height;
+  final int? weight;
+  const UpdateMetricEvent({this.height, this.weight});
 
   @override
-  List<Object?> get props => [height, weight, age, gender];
+  List<Object?> get props => [height, weight];
 }
 
-class ResetInput extends CalculatorEvent {
+class UpdateImperialEvent extends CalculatorEvent {
+  final int? feet;
+  final double? inches;
+  final double? lbs;
+  const UpdateImperialEvent({this.feet, this.inches, this.lbs});
+
+  @override
+  List<Object?> get props => [feet, inches, lbs];
+}
+
+class SwitchCurrentUnit extends CalculatorEvent {
+  final CurrentUnit currentUnit;
+
+  const SwitchCurrentUnit({required this.currentUnit});
+
+  @override
+  List<Object> get props => [currentUnit];
+}
+
+class ResetInputEvent extends CalculatorEvent {
   final InputType inputType;
 
-  const ResetInput({required this.inputType});
+  const ResetInputEvent({required this.inputType});
 
   @override
   List<Object?> get props => [inputType];
+}
+
+class ResetEvent extends CalculatorEvent {
+  @override
+  List<Object?> get props => [];
 }
