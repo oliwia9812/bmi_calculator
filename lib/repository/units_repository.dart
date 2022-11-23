@@ -1,8 +1,7 @@
 import 'dart:math';
 
 abstract class MetricSystem {
-  static const double poundMultipier = 0.45359237;
-  static const double inchesMultiplier = 2.54;
+  static const int inchesInFoot = 12;
 
   String getBmiResult();
 }
@@ -16,9 +15,7 @@ class Imperial extends MetricSystem {
 
   @override
   String getBmiResult() {
-    int inchesInFoot = 12;
-
-    double totalHeight = (feet! * inchesInFoot) + inches!;
+    double totalHeight = (feet! * MetricSystem.inchesInFoot) + inches!;
     double result = 703 * (lbs! / (totalHeight * totalHeight));
     return result.toStringAsFixed(2);
   }

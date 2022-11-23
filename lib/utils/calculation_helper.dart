@@ -1,4 +1,4 @@
-abstract class CalculationHelper {
+class CalculationHelper {
   static String getInterpretation(double result) {
     if (result < 16.0) {
       return "Very severly underweight";
