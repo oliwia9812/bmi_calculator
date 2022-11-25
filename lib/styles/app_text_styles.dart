@@ -20,6 +20,12 @@ abstract class AppTextStyles {
     fontWeight: FontWeight.w600,
   );
 
+  static const TextStyle cardBody = TextStyle(
+    color: AppColors.darkGray,
+    fontSize: 15.0,
+    fontWeight: FontWeight.w400,
+  );
+
   static const TextStyle hintText = TextStyle(
     color: AppColors.lightGray,
     fontSize: 36.0,
@@ -43,5 +49,11 @@ abstract class AppTextStyles {
     fontSize: 18.0,
     fontWeight: FontWeight.w400,
     decoration: TextDecoration.none,
+  );
+
+  static const TextStyle elevatedButton = TextStyle(
+    color: AppColors.white,
+    fontSize: 15.0,
+    fontWeight: FontWeight.w600,
   );
 }

@@ -1,4 +1,4 @@
-import 'package:bmi_calculator/bloc/calculator_bloc.dart';
+import 'package:bmi_calculator/bloc/bmi_calculator/calculator_bloc.dart';
 import 'package:bmi_calculator/generated/assets.gen.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/gender_button.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +56,15 @@ class _GenderCardsState extends State<GenderCards> {
               setState(() {
                 for (int i = 0; i < _selections.length; i++) {
                   _selections[i] = i == index;
+                }
+                if (index == 0) {
+                  context
+                      .read<CalculatorBloc>()
+                      .add(const SetGenderEvent(gender: Gender.male));
+                } else {
+                  context
+                      .read<CalculatorBloc>()
+                      .add(const SetGenderEvent(gender: Gender.female));
                 }
               });
             },

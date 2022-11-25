@@ -23,3 +23,12 @@ class CalculatorLoaded extends CalculatorState {
   @override
   List<Object?> get props => [currentUnit, result, interpretation];
 }
+
+class AgeChanged extends CalculatorState {
+  final int age;
+
+  const AgeChanged({required this.age});
+
+  @override
+  List<Object?> get props => [age];
+}

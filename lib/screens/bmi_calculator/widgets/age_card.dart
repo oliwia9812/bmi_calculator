@@ -1,4 +1,5 @@
-import 'package:bmi_calculator/bloc/calculator_bloc.dart';
+import 'package:bmi_calculator/bloc/bmi_calculator/calculator_bloc.dart';
+import 'package:bmi_calculator/constants.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/shared/card_label.dart';
 import 'package:bmi_calculator/styles/app_colors.dart';
 import 'package:bmi_calculator/styles/app_decorations.dart';
@@ -13,16 +14,16 @@ class AgeCard extends StatefulWidget {
   State<AgeCard> createState() => _AgeCardState();
 }
 
-int _currentAge = 30;
-
 class _AgeCardState extends State<AgeCard> {
+  int _currentAge = Constants.initialAge;
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<CalculatorBloc, CalculatorState>(
       listener: (context, state) {
-        if (state is CalculatorInitial) {
+        if (state is AgeChanged) {
           setState(() {
-            _currentAge = 30;
+            _currentAge = state.age;
           });
         }
       },
@@ -46,18 +47,18 @@ class _AgeCardState extends State<AgeCard> {
                     _buildIconButton(
                       icon: Icons.remove,
                       callback: () {
-                        setState(() {
-                          _currentAge--;
-                        });
+                        context
+                            .read<CalculatorBloc>()
+                            .add(const UpdateAgeEvent(isIncrement: false));
                       },
                     ),
                     _buildAge(),
                     _buildIconButton(
                       icon: Icons.add,
                       callback: () {
-                        setState(() {
-                          _currentAge++;
-                        });
+                        context
+                            .read<CalculatorBloc>()
+                            .add(const UpdateAgeEvent(isIncrement: true));
                       },
                     ),
                   ],

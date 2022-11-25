@@ -46,4 +46,12 @@ abstract class AppDecorations {
       ),
     ),
   );
+
+  static ButtonStyle elevatedButton = ElevatedButton.styleFrom(
+    backgroundColor: AppColors.purple,
+    minimumSize: const Size.fromHeight(60.0),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(30.0),
+    ),
+  );
 }

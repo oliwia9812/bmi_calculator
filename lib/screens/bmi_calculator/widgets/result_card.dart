@@ -1,4 +1,4 @@
-import 'package:bmi_calculator/bloc/calculator_bloc.dart';
+import 'package:bmi_calculator/bloc/bmi_calculator/calculator_bloc.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/custom_linear_gauge.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/shared/card_label.dart';
 import 'package:bmi_calculator/styles/app_text_styles.dart';
@@ -26,7 +26,7 @@ class _ResultCardState extends State<ResultCard> {
           decoration: AppDecorations.card(),
           padding: const EdgeInsets.all(16.0),
           width: double.infinity,
-          height: 260.0,
+          // height: 260.0,
           child: BlocBuilder<CalculatorBloc, CalculatorState>(
             builder: (context, state) {
               if (state is CalculatorLoaded) {

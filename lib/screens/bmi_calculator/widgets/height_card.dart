@@ -1,5 +1,5 @@
-import 'package:bmi_calculator/bloc/calculator_bloc.dart';
-import 'package:bmi_calculator/repository/units_repository.dart';
+import 'package:bmi_calculator/bloc/bmi_calculator/calculator_bloc.dart';
+import 'package:bmi_calculator/repositories/units_repository.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/shared/card_label.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/shared/custom_text_form_field.dart';
 import 'package:bmi_calculator/styles/app_decorations.dart';
@@ -117,7 +117,6 @@ class _HeightCardState extends State<HeightCard> {
       controller: _heightFtController,
       onChange: (value) {
         if (value.isEmpty) {
-          _fHeightFt.unfocus();
           context
               .read<CalculatorBloc>()
               .add(const ResetInputEvent(inputType: InputType.feet));
@@ -159,7 +158,6 @@ class _HeightCardState extends State<HeightCard> {
       controller: _heightCmController,
       focusNode: _fHeightCm,
       onChange: (value) {
-        if (value.isEmpty) _fHeightCm.unfocus();
         if (value.isEmpty || value.length <= 2) {
           context
               .read<CalculatorBloc>()

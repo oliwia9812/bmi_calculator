@@ -16,7 +16,7 @@ class UpdateMetricEvent extends CalculatorEvent {
 class UpdateImperialEvent extends CalculatorEvent {
   final int? feet;
   final double? inches;
-  final double? lbs;
+  final int? lbs;
   const UpdateImperialEvent({this.feet, this.inches, this.lbs});
 
   @override
@@ -44,4 +44,27 @@ class ResetInputEvent extends CalculatorEvent {
 class ResetEvent extends CalculatorEvent {
   @override
   List<Object?> get props => [];
+}
+
+class SaveBmiResultEvent extends CalculatorEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class SetGenderEvent extends CalculatorEvent {
+  final Gender? gender;
+
+  const SetGenderEvent({this.gender});
+
+  @override
+  List<Object?> get props => [gender];
+}
+
+class UpdateAgeEvent extends CalculatorEvent {
+  final bool isIncrement;
+
+  const UpdateAgeEvent({required this.isIncrement});
+
+  @override
+  List<Object?> get props => [isIncrement];
 }

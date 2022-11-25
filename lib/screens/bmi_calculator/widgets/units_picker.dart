@@ -1,5 +1,5 @@
-import 'package:bmi_calculator/bloc/calculator_bloc.dart';
-import 'package:bmi_calculator/repository/units_repository.dart';
+import 'package:bmi_calculator/bloc/bmi_calculator/calculator_bloc.dart';
+import 'package:bmi_calculator/repositories/units_repository.dart';
 import 'package:bmi_calculator/styles/app_colors.dart';
 import 'package:bmi_calculator/styles/app_decorations.dart';
 import 'package:bmi_calculator/styles/app_text_styles.dart';

@@ -9,7 +9,7 @@ abstract class MetricSystem {
 class Imperial extends MetricSystem {
   final int? feet;
   final double? inches;
-  final double? lbs;
+  final int? lbs;
 
   Imperial({this.feet, this.inches, this.lbs});
 
