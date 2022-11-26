@@ -6,7 +6,13 @@ class DatabaseRepository {
 
   DatabaseRepository({required Isar isar}) : _isar = isar;
 
-  void saveResult(BmiResult bmiResult) async {
+  Future<void> saveResult(BmiResult bmiResult) async {
     await _isar.writeTxn(() => _isar.bmiResults.put(bmiResult));
+  }
+
+  Future<List<BmiResult>> getBmiResults() async {
+    List<BmiResult> resultsList =
+        await _isar.bmiResults.where().sortByDateDesc().findAll();
+    return resultsList;
   }
 }

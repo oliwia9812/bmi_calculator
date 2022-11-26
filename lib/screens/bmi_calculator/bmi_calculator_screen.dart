@@ -153,12 +153,12 @@ class _BmiCalculatorScreenState extends State<BmiCalculatorScreen> {
           onPressed: _saveResultButtonIsEnable
               ? () {
                   context.read<CalculatorBloc>().add(SaveBmiResultEvent());
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const BmiResultScreen(),
                       ));
-                  context.read<CalculatorBloc>().add(ResetEvent());
                 }
               : null,
           child: const Text(

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:bmi_calculator/bloc/bmi_results/bmi_results_bloc.dart';
 import 'package:bmi_calculator/constants.dart';
 import 'package:bmi_calculator/models/bmi_result.dart';
 import 'package:bmi_calculator/repositories/database_repository.dart';
@@ -16,8 +17,12 @@ enum Gender { male, female }
 
 class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
   final DatabaseRepository _databaseRepository;
-  CalculatorBloc({required DatabaseRepository databaseRepository})
-      : _databaseRepository = databaseRepository,
+  final BmiResultsBloc _bmiResultsBloc;
+  CalculatorBloc({
+    required DatabaseRepository databaseRepository,
+    required BmiResultsBloc bmiResultsBloc,
+  })  : _databaseRepository = databaseRepository,
+        _bmiResultsBloc = bmiResultsBloc,
         super(CalculatorInitial()) {
     on<UpdateMetricEvent>(_handleUpdateMetric);
     on<SwitchCurrentUnit>(_handleSwitchCurrentUnit);
@@ -41,7 +46,7 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
   String? _interpretation;
   bool saveBmiResultButtonIsEnable = false;
 
-  void _handleSwitchCurrentUnit(
+  _handleSwitchCurrentUnit(
       SwitchCurrentUnit event, Emitter<CalculatorState> emit) {
     _currentUnit = event.currentUnit;
 
@@ -51,8 +56,7 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
     ));
   }
 
-  void _handleUpdateMetric(
-      UpdateMetricEvent event, Emitter<CalculatorState> emit) {
+  _handleUpdateMetric(UpdateMetricEvent event, Emitter<CalculatorState> emit) {
     setPropertiesMetric(event);
 
     if (_height != null && _weight != null) {
@@ -74,7 +78,7 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
     ));
   }
 
-  void _handleUpdateImperial(
+  _handleUpdateImperial(
       UpdateImperialEvent event, Emitter<CalculatorState> emit) {
     setPropertiesImperial(event);
 
@@ -97,18 +101,18 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
     ));
   }
 
-  void setPropertiesMetric(UpdateMetricEvent event) {
+  setPropertiesMetric(UpdateMetricEvent event) {
     event.height != null ? _height = event.height : null;
     event.weight != null ? _weight = event.weight : null;
   }
 
-  void setPropertiesImperial(UpdateImperialEvent event) {
+  setPropertiesImperial(UpdateImperialEvent event) {
     event.feet != null ? _feet = event.feet : null;
     event.inches != null ? _inches = event.inches : null;
     event.lbs != null ? _lbs = event.lbs : null;
   }
 
-  void _handleResetInput(ResetInputEvent event, Emitter<CalculatorState> emit) {
+  _handleResetInput(ResetInputEvent event, Emitter<CalculatorState> emit) {
     saveBmiResultButtonIsEnable = false;
 
     switch (event.inputType) {
@@ -135,7 +139,7 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
     ));
   }
 
-  void _handleReset(ResetEvent event, Emitter<CalculatorState> emit) {
+  _handleReset(ResetEvent event, Emitter<CalculatorState> emit) {
     _weight = null;
     _height = null;
     _feet = null;
@@ -155,11 +159,11 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
     ));
   }
 
-  void _handleSetGender(SetGenderEvent event, Emitter<CalculatorState> emit) {
+  _handleSetGender(SetGenderEvent event, Emitter<CalculatorState> emit) {
     event.gender != null ? _gender = event.gender : null;
   }
 
-  void _handleUpdateAge(UpdateAgeEvent event, Emitter<CalculatorState> emit) {
+  _handleUpdateAge(UpdateAgeEvent event, Emitter<CalculatorState> emit) {
     if (event.isIncrement) {
       if (_age >= 105) return;
       _age++;
@@ -176,24 +180,26 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
     ));
   }
 
-  void _handleSaveBmiResult(
-      SaveBmiResultEvent event, Emitter<CalculatorState> emit) {
+  _handleSaveBmiResult(
+      SaveBmiResultEvent event, Emitter<CalculatorState> emit) async {
     late double? imperialHeight;
 
     if (_currentUnit == CurrentUnit.imperial) {
       imperialHeight = double.parse("$_feet.${_inches!.toInt()}");
     }
-    _databaseRepository.saveResult(
-      BmiResult(
-        bmiResult: double.parse(_result!),
-        currentUnit: _currentUnit!.currentUnitToString(),
-        date: DateTime.now(),
-        height: _currentUnit == CurrentUnit.imperial
-            ? imperialHeight
-            : double.parse(_height.toString()),
-        interpretation: _interpretation,
-        weight: _currentUnit == CurrentUnit.imperial ? _lbs : _weight,
-      ),
-    );
+
+    await _databaseRepository.saveResult(BmiResult(
+      bmiResult: double.parse(_result!),
+      currentUnit: _currentUnit!.currentUnitToString(),
+      date: DateTime.now(),
+      height: _currentUnit == CurrentUnit.imperial
+          ? imperialHeight
+          : double.parse(_height.toString()),
+      interpretation: _interpretation,
+      weight: _currentUnit == CurrentUnit.imperial ? _lbs : _weight,
+    ));
+
+    _bmiResultsBloc.add(GetBmiResultsEvent());
+    add(ResetEvent());
   }
 }

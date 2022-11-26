@@ -1,7 +1,10 @@
+import 'package:bmi_calculator/bloc/bmi_results/bmi_results_bloc.dart';
+import 'package:bmi_calculator/models/bmi_result.dart';
 import 'package:bmi_calculator/screens/bmi_result/widgets/bmi_result_list.dart';
 import 'package:bmi_calculator/shared/screen_title.dart';
 import 'package:bmi_calculator/styles/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BmiResultScreen extends StatelessWidget {
   const BmiResultScreen({super.key});
@@ -11,17 +14,31 @@ class BmiResultScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.white,
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        minimum: const EdgeInsets.symmetric(
-          horizontal: 16.0,
-          vertical: 32.0,
-        ),
-        child: Column(
-          children: [
-            _buildHeader(context),
-            _buildResultsList(),
-          ],
-        ),
+      body: BlocBuilder<BmiResultsBloc, BmiResultsState>(
+        builder: (context, state) {
+          if (state is BmiResultsLoading) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: AppColors.purple,
+              ),
+            );
+          } else if (state is BmiResultsLoaded) {
+            List<BmiResult> resultsList = state.results;
+            return SafeArea(
+              minimum: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 32.0,
+              ),
+              child: Column(
+                children: [
+                  _buildHeader(context),
+                  _buildResultsList(resultsList),
+                ],
+              ),
+            );
+          }
+          return const Text("Something went wrong!");
+        },
       ),
     );
   }
@@ -65,9 +82,11 @@ class BmiResultScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildResultsList() {
-    return const Flexible(
-      child: BmiResultList(),
+  Widget _buildResultsList(List<BmiResult> resultsList) {
+    return Flexible(
+      child: BmiResultList(
+        resultsList: resultsList,
+      ),
     );
   }
 }

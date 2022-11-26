@@ -1,10 +1,13 @@
+import 'package:bmi_calculator/models/bmi_result.dart';
 import 'package:bmi_calculator/styles/app_colors.dart';
 import 'package:bmi_calculator/styles/app_decorations.dart';
 import 'package:bmi_calculator/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class BmiResultListItem extends StatelessWidget {
-  const BmiResultListItem({super.key});
+  final BmiResult? bmiResult;
+  const BmiResultListItem({required this.bmiResult, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +28,12 @@ class BmiResultListItem extends StatelessWidget {
 
   Widget _buildDate() {
     return RichText(
-      text: const TextSpan(
+      text: TextSpan(
         style: AppTextStyles.cardTitleSmall,
         children: [
-          TextSpan(text: "Date: "),
+          const TextSpan(text: "Date: "),
           TextSpan(
-            text: "19 Nov, 2022",
+            text: DateFormat.yMMMd().format(bmiResult!.date!).toString(),
             style: AppTextStyles.cardBody,
           ),
         ],
@@ -52,15 +55,15 @@ class BmiResultListItem extends StatelessWidget {
             ),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Text(
-            "22.4",
+            bmiResult?.bmiResult.toString() ?? "-",
             style: AppTextStyles.cardTitleMedium,
           ),
         ),
-        const Text(
-          "NORMAL",
+        Text(
+          bmiResult?.interpretation ?? "-",
           style: AppTextStyles.cardTitleSmall,
         ),
       ],
