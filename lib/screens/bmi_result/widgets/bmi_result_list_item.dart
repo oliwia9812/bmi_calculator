@@ -29,7 +29,7 @@ class BmiResultListItem extends StatelessWidget {
   Widget _buildDate() {
     return RichText(
       text: TextSpan(
-        style: AppTextStyles.cardTitleSmall,
+        style: AppTextStyles.cardTitleSmall(),
         children: [
           const TextSpan(text: "Date: "),
           TextSpan(
@@ -51,7 +51,7 @@ class BmiResultListItem extends StatelessWidget {
             height: 8,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30.0),
-              color: AppColors.black,
+              color: _getColor(),
             ),
           ),
         ),
@@ -64,7 +64,7 @@ class BmiResultListItem extends StatelessWidget {
         ),
         Text(
           bmiResult?.interpretation ?? "-",
-          style: AppTextStyles.cardTitleSmall,
+          style: AppTextStyles.cardTitleSmall(color: _getColor()),
         ),
       ],
     );
@@ -72,9 +72,9 @@ class BmiResultListItem extends StatelessWidget {
 
   Widget _buildDetails() {
     return RichText(
-      text: const TextSpan(
-        style: AppTextStyles.cardTitleSmall,
-        children: [
+      text: TextSpan(
+        style: AppTextStyles.cardTitleSmall(),
+        children: const [
           TextSpan(text: "H: "),
           TextSpan(
             text: "177 cm",
@@ -89,5 +89,28 @@ class BmiResultListItem extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Color _getColor() {
+    double result = bmiResult!.bmiResult!;
+    if (result < 16.0) {
+      return AppColors.mint;
+    } else if (result >= 16.0 && result < 16.9) {
+      return AppColors.darkMint;
+    } else if (result >= 16.9 && result < 18.5) {
+      return AppColors.darkBlue;
+    } else if (result >= 18.5 && result < 24.9) {
+      return AppColors.green;
+    } else if (result >= 24.9 && result < 29.9) {
+      return AppColors.yellow;
+    } else if (result >= 29.9 && result < 34.9) {
+      return AppColors.orange;
+    } else if (result >= 34.9 && result < 39.9) {
+      return AppColors.pink;
+    } else if (result >= 39.0) {
+      return AppColors.red;
+    }
+
+    return AppColors.black;
   }
 }

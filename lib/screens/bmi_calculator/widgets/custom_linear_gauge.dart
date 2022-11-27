@@ -29,37 +29,37 @@ class _CustomLinearGaugeState extends State<CustomLinearGauge> {
         LinearGaugeRange(
           startValue: 12.0,
           endValue: 16.0,
-          color: Color(0xFFB5D7D1),
+          color: AppColors.mint,
         ),
         LinearGaugeRange(
           startValue: 16.0,
           endValue: 16.9,
-          color: Color(0xFF80A49E),
+          color: AppColors.darkMint,
         ),
         LinearGaugeRange(
           startValue: 16.9,
           endValue: 18.5,
-          color: Color(0xFF7B8FC4),
+          color: AppColors.darkBlue,
         ),
         LinearGaugeRange(
           startValue: 18.5,
           endValue: 24.9,
-          color: Color(0xFFB0E06B),
+          color: AppColors.green,
         ),
         LinearGaugeRange(
           startValue: 24.9,
           endValue: 29.9,
-          color: Color(0xFFFFD337),
+          color: AppColors.yellow,
         ),
         LinearGaugeRange(
           startValue: 29.9,
           endValue: 34.9,
-          color: Color(0xFFE9904D),
+          color: AppColors.orange,
         ),
         LinearGaugeRange(
           startValue: 34.9,
           endValue: 39.9,
-          color: Color(0xFFE07F84),
+          color: AppColors.pink,
         ),
         LinearGaugeRange(
           startValue: 39.0,

@@ -9,7 +9,7 @@ class CardLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       labelText,
-      style: AppTextStyles.cardTitleSmall,
+      style: AppTextStyles.cardTitleSmall(),
     );
   }
 }

@@ -2,11 +2,11 @@ import 'package:bmi_calculator/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 
 abstract class AppTextStyles {
-  static const TextStyle cardTitleSmall = TextStyle(
-    color: AppColors.darkGray,
-    fontSize: 15.0,
-    fontWeight: FontWeight.w600,
-  );
+  static TextStyle cardTitleSmall({Color? color}) => TextStyle(
+        color: color ?? AppColors.darkGray,
+        fontSize: 15.0,
+        fontWeight: FontWeight.w600,
+      );
 
   static const TextStyle cardTitleMedium = TextStyle(
     color: AppColors.darkGray,
