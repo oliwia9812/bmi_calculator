@@ -199,7 +199,7 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
       weight: _currentUnit == CurrentUnit.imperial ? _lbs : _weight,
     ));
 
-    _bmiResultsBloc.add(GetBmiResultsEvent());
     add(ResetEvent());
+    _bmiResultsBloc.add(GetBmiResultsEvent());
   }
 }

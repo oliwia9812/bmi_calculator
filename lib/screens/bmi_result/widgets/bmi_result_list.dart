@@ -35,8 +35,39 @@ class _BmiResultListState extends State<BmiResultList> {
             crossAxisCount: 2,
             children: List.generate(
               widget.resultsList.length,
-              (index) => BmiResultListItem(
-                bmiResult: widget.resultsList[index],
+              (index) => Dismissible(
+                direction: DismissDirection.endToStart,
+                background: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: AppColors.red,
+                  ),
+                  alignment: Alignment.centerRight,
+                  child: const Padding(
+                    padding: EdgeInsets.only(right: 16.0),
+                    child: Icon(
+                      Icons.delete,
+                      color: AppColors.white,
+                      size: 36.0,
+                    ),
+                  ),
+                ),
+                key: ValueKey(index),
+                onDismissed: (direction) {
+                  print(widget.resultsList[index].id);
+
+                  // setState(() {
+                  //   // widget.resultsList.removeAt(index);
+
+                  //   print(widget.resultsList[index].id);
+
+                  context.read<BmiResultsBloc>().add(
+                      DeleteBmiResultsEvent(id: widget.resultsList[index].id));
+                  // });
+                },
+                child: BmiResultListItem(
+                  bmiResult: widget.resultsList[index],
+                ),
               ),
             ),
           );

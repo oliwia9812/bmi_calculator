@@ -8,3 +8,12 @@ class GetBmiResultsEvent extends BmiResultsEvent {
   @override
   List<Object> get props => [];
 }
+
+class DeleteBmiResultsEvent extends BmiResultsEvent {
+  final int id;
+
+  const DeleteBmiResultsEvent({required this.id});
+
+  @override
+  List<Object> get props => [id];
+}

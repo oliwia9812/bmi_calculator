@@ -1,5 +1,6 @@
 import 'package:bmi_calculator/bloc/bmi_results/bmi_results_bloc.dart';
 import 'package:bmi_calculator/models/bmi_result.dart';
+import 'package:bmi_calculator/screens/bmi_calculator/bmi_calculator_screen.dart';
 import 'package:bmi_calculator/screens/bmi_result/widgets/bmi_result_list.dart';
 import 'package:bmi_calculator/shared/screen_title.dart';
 import 'package:bmi_calculator/styles/app_colors.dart';
@@ -65,7 +66,11 @@ class BmiResultScreen extends StatelessWidget {
       icon: const Icon(Icons.arrow_back_ios_new),
       iconSize: 24.0,
       onPressed: () {
-        Navigator.pop(context);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const BmiCalculatorScreen(),
+            ));
       },
     );
   }

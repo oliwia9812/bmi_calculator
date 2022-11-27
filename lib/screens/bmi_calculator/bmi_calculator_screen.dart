@@ -1,4 +1,5 @@
 import 'package:bmi_calculator/bloc/bmi_calculator/calculator_bloc.dart';
+import 'package:bmi_calculator/repositories/units_repository.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/age_card.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/gender_cards.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/widgets/height_card.dart';
@@ -26,6 +27,9 @@ class _BmiCalculatorScreenState extends State<BmiCalculatorScreen> {
 
   @override
   void initState() {
+    context
+        .read<CalculatorBloc>()
+        .add(const SwitchCurrentUnit(currentUnit: CurrentUnit.metric));
     _saveResultButtonIsEnable =
         context.read<CalculatorBloc>().saveBmiResultButtonIsEnable;
     super.initState();
@@ -98,6 +102,7 @@ class _BmiCalculatorScreenState extends State<BmiCalculatorScreen> {
             MaterialPageRoute(
               builder: (context) => const BmiResultScreen(),
             ));
+        context.read<CalculatorBloc>().add(ResetEvent());
       },
     );
   }
@@ -108,6 +113,9 @@ class _BmiCalculatorScreenState extends State<BmiCalculatorScreen> {
       iconSize: 28.0,
       onPressed: () {
         context.read<CalculatorBloc>().add(ResetEvent());
+        context
+            .read<CalculatorBloc>()
+            .add(const SwitchCurrentUnit(currentUnit: CurrentUnit.metric));
       },
     );
   }

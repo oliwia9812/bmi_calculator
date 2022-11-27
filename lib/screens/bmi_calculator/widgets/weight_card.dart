@@ -31,11 +31,10 @@ class _WeightCardState extends State<WeightCard> {
     return BlocConsumer<CalculatorBloc, CalculatorState>(
       listener: (context, state) {
         if (state is CalculatorInitial) {
-          _weightKgController.clear();
-          _weightLbController.clear();
           _fWeightKg.unfocus();
           _fWeightLb.unfocus();
-
+          _weightKgController.clear();
+          _weightLbController.clear();
           context
               .read<CalculatorBloc>()
               .add(const ResetInputEvent(inputType: InputType.weight));
