@@ -74,21 +74,45 @@ class BmiResultListItem extends StatelessWidget {
     return RichText(
       text: TextSpan(
         style: AppTextStyles.cardTitleSmall(),
-        children: const [
-          TextSpan(text: "H: "),
+        children: [
+          const TextSpan(text: "W: "),
           TextSpan(
-            text: "177 cm",
+            text: "${bmiResult!.weight} ${_getWeightUnit()}",
             style: AppTextStyles.cardBody,
           ),
-          TextSpan(text: " | "),
-          TextSpan(text: "W: "),
+          const TextSpan(text: " | "),
+          const TextSpan(text: "H: "),
           TextSpan(
-            text: "65 kg",
+            text: "${_getHeight()} ${_getHeightUnit()} ",
             style: AppTextStyles.cardBody,
           ),
         ],
       ),
     );
+  }
+
+  num _getHeight() {
+    if (bmiResult!.currentUnit == "Metric") {
+      return bmiResult!.height!.round();
+    } else {
+      return bmiResult!.height!;
+    }
+  }
+
+  String _getWeightUnit() {
+    if (bmiResult!.currentUnit == "Metric") {
+      return "kg";
+    } else {
+      return "lb";
+    }
+  }
+
+  String _getHeightUnit() {
+    if (bmiResult!.currentUnit == "Metric") {
+      return "cm";
+    } else {
+      return "ft";
+    }
   }
 
   Color _getColor() {
