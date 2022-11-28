@@ -27,12 +27,12 @@ class _BmiCalculatorScreenState extends State<BmiCalculatorScreen> {
 
   @override
   void initState() {
+    super.initState();
     context
         .read<CalculatorBloc>()
         .add(const SwitchCurrentUnit(currentUnit: CurrentUnit.metric));
     _saveResultButtonIsEnable =
         context.read<CalculatorBloc>().saveBmiResultButtonIsEnable;
-    super.initState();
   }
 
   @override

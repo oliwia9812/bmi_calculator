@@ -21,7 +21,7 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (context) => BmiResultsBloc(
               databaseRepository: context.read<DatabaseRepository>(),
-            )..add(const GetBmiResultsEvent()),
+            )..add(const GetBmiResultsEvent(sortBy: SortBy.dateDesc)),
           ),
           BlocProvider(
             create: (context) => CalculatorBloc(

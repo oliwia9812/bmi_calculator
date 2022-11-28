@@ -21,6 +21,18 @@ class DatabaseRepository {
     return resultsList;
   }
 
+  Future<List<BmiResult>> getBmiResultsByBmiResultAscending() async {
+    List<BmiResult> resultsList =
+        await _isar.bmiResults.where().sortByBmiResult().findAll();
+    return resultsList;
+  }
+
+  Future<List<BmiResult>> getBmiResultsByBmiResultDescending() async {
+    List<BmiResult> resultsList =
+        await _isar.bmiResults.where().sortByBmiResultDesc().findAll();
+    return resultsList;
+  }
+
   Future<void> deleteBmiResult(int id) async {
     await _isar.writeTxn(() => _isar.bmiResults.delete(id));
   }

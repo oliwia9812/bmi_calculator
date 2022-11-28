@@ -59,18 +59,25 @@ class _UnitsPickerState extends State<UnitsPicker> {
           child: SafeArea(
             top: false,
             child: CupertinoPicker(
-                magnification: 1.15,
-                itemExtent: 24.0,
-                squeeze: 1.2,
+                itemExtent: 50.0,
+                squeeze: 1.4,
                 useMagnifier: true,
                 onSelectedItemChanged: (value) {
                   setState(() {
                     _selectedValue = value;
                   });
                 },
+                scrollController:
+                    FixedExtentScrollController(initialItem: _selectedValue),
                 children: const [
-                  Text("Metric"),
-                  Text("Imperial"),
+                  Padding(
+                    padding: EdgeInsets.only(top: 12.0),
+                    child: Text("Metric"),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 12.0),
+                    child: Text("Imperial"),
+                  ),
                 ]),
           ),
         ),

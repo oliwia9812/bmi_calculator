@@ -6,6 +6,8 @@ import 'package:equatable/equatable.dart';
 part 'bmi_results_event.dart';
 part 'bmi_results_state.dart';
 
+enum SortBy { dateDesc, dateAsc, bmiResultDesc, bmiResultAsc }
+
 class BmiResultsBloc extends Bloc<BmiResultsEvent, BmiResultsState> {
   final DatabaseRepository _databaseRepository;
 
@@ -21,11 +23,17 @@ class BmiResultsBloc extends Bloc<BmiResultsEvent, BmiResultsState> {
     emit(BmiResultsLoading());
 
     try {
-      List<BmiResult> results;
-      if (event.isSortByDateAscending == true) {
+      late List<BmiResult> results;
+
+      if (event.sortBy == SortBy.dateAsc) {
         results = await _databaseRepository.getBmiResultsByDateAscending();
-      } else {
+      } else if (event.sortBy == SortBy.dateDesc) {
         results = await _databaseRepository.getBmiResults();
+      } else if (event.sortBy == SortBy.bmiResultAsc) {
+        results = await _databaseRepository.getBmiResultsByBmiResultAscending();
+      } else if (event.sortBy == SortBy.bmiResultDesc) {
+        results =
+            await _databaseRepository.getBmiResultsByBmiResultDescending();
       }
 
       return emit(BmiResultsLoaded(results: results));

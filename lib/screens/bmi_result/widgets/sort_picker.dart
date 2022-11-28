@@ -19,12 +19,22 @@ class _SortPickerState extends State<SortPicker> {
       case 0:
         context
             .read<BmiResultsBloc>()
-            .add(const GetBmiResultsEvent(isSortByDateAscending: false));
+            .add(const GetBmiResultsEvent(sortBy: SortBy.dateDesc));
         break;
       case 1:
         context
             .read<BmiResultsBloc>()
-            .add(const GetBmiResultsEvent(isSortByDateAscending: true));
+            .add(const GetBmiResultsEvent(sortBy: SortBy.dateAsc));
+        break;
+      case 2:
+        context
+            .read<BmiResultsBloc>()
+            .add(const GetBmiResultsEvent(sortBy: SortBy.bmiResultDesc));
+        break;
+      case 3:
+        context
+            .read<BmiResultsBloc>()
+            .add(const GetBmiResultsEvent(sortBy: SortBy.bmiResultAsc));
         break;
       default:
     }
@@ -39,9 +49,8 @@ class _SortPickerState extends State<SortPicker> {
       child: SafeArea(
         top: false,
         child: CupertinoPicker(
-            magnification: 1.15,
-            itemExtent: 24.0,
-            squeeze: 1.2,
+            itemExtent: 50.0,
+            squeeze: 1.4,
             useMagnifier: true,
             onSelectedItemChanged: (value) {
               setState(() {
@@ -52,8 +61,22 @@ class _SortPickerState extends State<SortPicker> {
               initialItem: _selectedValue,
             ),
             children: const [
-              Text("Sort by date (descending)"),
-              Text("Sort by date (ascending)"),
+              Padding(
+                padding: EdgeInsets.only(top: 12.0),
+                child: Text("Sort by date (descending)"),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 12.0),
+                child: Text("Sort by date (ascending)"),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 12.0),
+                child: Text("Sort by BMI result (descending)"),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 12.0),
+                child: Text("Sort by BMI result (ascending)"),
+              ),
             ]),
       ),
     );
