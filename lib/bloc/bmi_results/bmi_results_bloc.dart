@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:bmi_calculator/models/bmi_result.dart';
 import 'package:bmi_calculator/repositories/database_repository.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/rendering.dart';
 
 part 'bmi_results_event.dart';
 part 'bmi_results_state.dart';
@@ -22,7 +21,12 @@ class BmiResultsBloc extends Bloc<BmiResultsEvent, BmiResultsState> {
     emit(BmiResultsLoading());
 
     try {
-      List<BmiResult> results = await _databaseRepository.getBmiResults();
+      List<BmiResult> results;
+      if (event.isSortByDateAscending == true) {
+        results = await _databaseRepository.getBmiResultsByDateAscending();
+      } else {
+        results = await _databaseRepository.getBmiResults();
+      }
 
       return emit(BmiResultsLoaded(results: results));
     } catch (e) {

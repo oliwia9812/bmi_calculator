@@ -5,6 +5,10 @@ abstract class BmiResultsEvent extends Equatable {
 }
 
 class GetBmiResultsEvent extends BmiResultsEvent {
+  final bool? isSortByDateAscending;
+
+  const GetBmiResultsEvent({this.isSortByDateAscending});
+
   @override
   List<Object> get props => [];
 }

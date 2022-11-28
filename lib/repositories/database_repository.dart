@@ -16,6 +16,11 @@ class DatabaseRepository {
     return resultsList;
   }
 
+  Future<List<BmiResult>> getBmiResultsByDateAscending() async {
+    List<BmiResult> resultsList = await _isar.bmiResults.where().findAll();
+    return resultsList;
+  }
+
   Future<void> deleteBmiResult(int id) async {
     await _isar.writeTxn(() => _isar.bmiResults.delete(id));
   }

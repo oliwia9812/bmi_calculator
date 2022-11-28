@@ -200,6 +200,6 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
     ));
 
     add(ResetEvent());
-    _bmiResultsBloc.add(GetBmiResultsEvent());
+    _bmiResultsBloc.add(const GetBmiResultsEvent(isSortByDateAscending: false));
   }
 }

@@ -2,8 +2,10 @@ import 'package:bmi_calculator/bloc/bmi_results/bmi_results_bloc.dart';
 import 'package:bmi_calculator/models/bmi_result.dart';
 import 'package:bmi_calculator/screens/bmi_calculator/bmi_calculator_screen.dart';
 import 'package:bmi_calculator/screens/bmi_result/widgets/bmi_result_list.dart';
+import 'package:bmi_calculator/screens/bmi_result/widgets/sort_picker.dart';
 import 'package:bmi_calculator/shared/screen_title.dart';
 import 'package:bmi_calculator/styles/app_colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -54,7 +56,7 @@ class BmiResultScreen extends StatelessWidget {
           children: [
             _buildBackButton(context),
             _buildTitle(),
-            _buildSortIcon(),
+            _buildSortButton(context)
           ],
         ),
       ),
@@ -79,12 +81,15 @@ class BmiResultScreen extends StatelessWidget {
     return const ScreenTitle(title: "Your BMI results");
   }
 
-  Widget _buildSortIcon() {
+  Widget _buildSortButton(BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.sort),
-      iconSize: 24.0,
-      onPressed: () {},
-    );
+        onPressed: () {
+          showCupertinoModalPopup(
+            context: context,
+            builder: (context) => const SortPicker(),
+          );
+        },
+        icon: const Icon(Icons.sort));
   }
 
   Widget _buildResultsList(List<BmiResult> resultsList) {

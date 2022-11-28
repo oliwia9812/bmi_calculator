@@ -21,7 +21,7 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (context) => BmiResultsBloc(
               databaseRepository: context.read<DatabaseRepository>(),
-            )..add(GetBmiResultsEvent()),
+            )..add(const GetBmiResultsEvent()),
           ),
           BlocProvider(
             create: (context) => CalculatorBloc(

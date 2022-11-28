@@ -54,16 +54,8 @@ class _BmiResultListState extends State<BmiResultList> {
                 ),
                 key: ValueKey(index),
                 onDismissed: (direction) {
-                  print(widget.resultsList[index].id);
-
-                  // setState(() {
-                  //   // widget.resultsList.removeAt(index);
-
-                  //   print(widget.resultsList[index].id);
-
                   context.read<BmiResultsBloc>().add(
                       DeleteBmiResultsEvent(id: widget.resultsList[index].id));
-                  // });
                 },
                 child: BmiResultListItem(
                   bmiResult: widget.resultsList[index],
