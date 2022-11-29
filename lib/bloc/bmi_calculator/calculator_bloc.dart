@@ -46,17 +46,18 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
   String? _interpretation;
   bool saveBmiResultButtonIsEnable = false;
 
-  _handleSwitchCurrentUnit(
+  void _handleSwitchCurrentUnit(
       SwitchCurrentUnit event, Emitter<CalculatorState> emit) {
     _currentUnit = event.currentUnit;
 
-    emit(CalculatorLoaded(
+    return emit(CalculatorLoaded(
       result: null,
       currentUnit: _currentUnit,
     ));
   }
 
-  _handleUpdateMetric(UpdateMetricEvent event, Emitter<CalculatorState> emit) {
+  void _handleUpdateMetric(
+      UpdateMetricEvent event, Emitter<CalculatorState> emit) {
     setPropertiesMetric(event);
 
     if (_height != null && _weight != null) {
@@ -78,7 +79,7 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
     ));
   }
 
-  _handleUpdateImperial(
+  void _handleUpdateImperial(
       UpdateImperialEvent event, Emitter<CalculatorState> emit) {
     setPropertiesImperial(event);
 
@@ -101,18 +102,18 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
     ));
   }
 
-  setPropertiesMetric(UpdateMetricEvent event) {
+  void setPropertiesMetric(UpdateMetricEvent event) {
     event.height != null ? _height = event.height : null;
     event.weight != null ? _weight = event.weight : null;
   }
 
-  setPropertiesImperial(UpdateImperialEvent event) {
+  void setPropertiesImperial(UpdateImperialEvent event) {
     event.feet != null ? _feet = event.feet : null;
     event.inches != null ? _inches = event.inches : null;
     event.lbs != null ? _lbs = event.lbs : null;
   }
 
-  _handleResetInput(ResetInputEvent event, Emitter<CalculatorState> emit) {
+  void _handleResetInput(ResetInputEvent event, Emitter<CalculatorState> emit) {
     saveBmiResultButtonIsEnable = false;
 
     switch (event.inputType) {
@@ -133,13 +134,13 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
         break;
     }
 
-    emit(CalculatorLoaded(
+    return emit(CalculatorLoaded(
       result: null,
       currentUnit: _currentUnit,
     ));
   }
 
-  _handleReset(ResetEvent event, Emitter<CalculatorState> emit) {
+  void _handleReset(ResetEvent event, Emitter<CalculatorState> emit) {
     _weight = null;
     _height = null;
     _feet = null;
@@ -159,11 +160,11 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
     ));
   }
 
-  _handleSetGender(SetGenderEvent event, Emitter<CalculatorState> emit) {
+  void _handleSetGender(SetGenderEvent event, Emitter<CalculatorState> emit) {
     event.gender != null ? _gender = event.gender : null;
   }
 
-  _handleUpdateAge(UpdateAgeEvent event, Emitter<CalculatorState> emit) {
+  void _handleUpdateAge(UpdateAgeEvent event, Emitter<CalculatorState> emit) {
     if (event.isIncrement) {
       if (_age >= 105) return;
       _age++;
@@ -173,14 +174,14 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
     }
 
     emit(AgeChanged(age: _age));
-    emit(CalculatorLoaded(
+    return emit(CalculatorLoaded(
       result: _result,
       interpretation: _interpretation,
       currentUnit: _currentUnit,
     ));
   }
 
-  _handleSaveBmiResult(
+  Future<void> _handleSaveBmiResult(
       SaveBmiResultEvent event, Emitter<CalculatorState> emit) async {
     late double? imperialHeight;
 

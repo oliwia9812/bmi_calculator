@@ -2,7 +2,7 @@ import 'package:bmi_calculator/styles/app_colors.dart';
 import 'package:bmi_calculator/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
-abstract class AppDecorations {
+class AppDecorations {
   static BoxDecoration card({bool? isSelected}) => BoxDecoration(
         border: isSelected != null && isSelected
             ? Border.all(width: 2.0, color: AppColors.purple)

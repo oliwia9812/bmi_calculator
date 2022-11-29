@@ -14,33 +14,30 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => DatabaseRepository(isar: isar),
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => BmiResultsBloc(
-              databaseRepository: context.read<DatabaseRepository>(),
-            )..add(const GetBmiResultsEvent(sortBy: SortBy.dateDesc)),
-          ),
-          BlocProvider(
-            create: (context) => CalculatorBloc(
-              databaseRepository: context.read<DatabaseRepository>(),
-              bmiResultsBloc: context.read<BmiResultsBloc>(),
-            )..add(
-                const SwitchCurrentUnit(
-                  currentUnit: CurrentUnit.metric,
-                ),
-              ),
-          ),
-        ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            fontFamily: FontFamily.montserrat,
-          ),
-          home: const BmiCalculatorScreen(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => BmiResultsBloc(
+            databaseRepository: context.read<DatabaseRepository>(),
+          )..add(const GetBmiResultsEvent(sortBy: SortBy.dateDesc)),
         ),
+        BlocProvider(
+          create: (context) => CalculatorBloc(
+            databaseRepository: context.read<DatabaseRepository>(),
+            bmiResultsBloc: context.read<BmiResultsBloc>(),
+          )..add(
+              const SwitchCurrentUnit(
+                currentUnit: CurrentUnit.metric,
+              ),
+            ),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: FontFamily.montserrat,
+        ),
+        home: const BmiCalculatorScreen(),
       ),
     );
   }

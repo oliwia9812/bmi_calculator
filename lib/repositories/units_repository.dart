@@ -1,12 +1,12 @@
 import 'dart:math';
 
-abstract class MetricSystem {
+abstract class UnitSystem {
   static const int inchesInFoot = 12;
 
   String getBmiResult();
 }
 
-class Imperial extends MetricSystem {
+class Imperial extends UnitSystem {
   final int? feet;
   final double? inches;
   final int? lbs;
@@ -15,13 +15,13 @@ class Imperial extends MetricSystem {
 
   @override
   String getBmiResult() {
-    double totalHeight = (feet! * MetricSystem.inchesInFoot) + inches!;
+    double totalHeight = (feet! * UnitSystem.inchesInFoot) + inches!;
     double result = 703 * (lbs! / (totalHeight * totalHeight));
     return result.toStringAsFixed(2);
   }
 }
 
-class Metric extends MetricSystem {
+class Metric extends UnitSystem {
   final int? height;
   final int? weight;
 
